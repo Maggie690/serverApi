@@ -63,7 +63,7 @@ public class ServerController {
                         .statusCode(HttpStatus.CREATED.value()).build());
     }
 
-    @GetMapping("/sever/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Response> getByIdServer(@PathVariable("id") Long id) {
         Server server = service.get(id);
 
@@ -76,7 +76,7 @@ public class ServerController {
                         .statusCode(HttpStatus.OK.value()).build());
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Response> delete(@PathVariable("id") Long id) {
 
         return ResponseEntity.ok(
