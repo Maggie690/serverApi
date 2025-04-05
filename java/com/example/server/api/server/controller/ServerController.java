@@ -25,31 +25,6 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 public class ServerController {
     private final ServerService service;
 
-    @GetMapping("/list")
-    public ResponseEntity<Response> getServers() {
-        return ResponseEntity.ok(
-                Response.builder()
-                        .localDateTime(LocalDateTime.now())
-                        .data(Map.of("servers", service.list(30)))
-                        .message("Servers retrieved.")
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value()).build());
-    }
-
-    @GetMapping("/ping/{ipAddress}")
-    public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
-        Server server = service.ping(ipAddress);
-
-        return ResponseEntity.ok(
-                Response.builder()
-                        .localDateTime(LocalDateTime.now())
-                        .data(Map.of("servers", service.list(30)))
-                        .message(server.getStatus() == Status.UP ? "Ping success." : "Ping failed")
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value()).build());
-    }
-
-
     @PostMapping("/save")
     public ResponseEntity<Response> save(@RequestBody @Valid Server server) throws IOException {
         Server savedService = service.create(server);
@@ -76,6 +51,36 @@ public class ServerController {
                         .statusCode(HttpStatus.OK.value()).build());
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<Response> getServers() {
+        return ResponseEntity.ok(
+                Response.builder()
+                        .localDateTime(LocalDateTime.now())
+                        .data(Map.of("servers", service.list(30)))
+                        .message("Servers retrieved.")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value()).build());
+    }
+
+    @GetMapping("/ping/{ipAddress}")
+    public ResponseEntity<Response> pingServer(@PathVariable("ipAddress") String ipAddress) throws IOException {
+        Server server = service.ping(ipAddress);
+
+        return ResponseEntity.ok(
+                Response.builder()
+                        .localDateTime(LocalDateTime.now())
+                        .data(Map.of("servers", service.list(30)))
+                        .message(server.getStatus() == Status.UP ? "Ping success." : "Ping failed")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value()).build());
+    }
+
+    @GetMapping(path = "/image/{fileName}")
+    @Procedure(value = IMAGE_PNG_VALUE)
+    public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "/Downloads/server/src/main/resources/static/img/" + fileName));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> delete(@PathVariable("id") Long id) {
 
@@ -86,12 +91,5 @@ public class ServerController {
                         .message("Server deleted.")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value()).build());
-    }
-
-    @GetMapping(path = "/image/{fileName}")
-    @Procedure(value = IMAGE_PNG_VALUE)
-    public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
-        return Files.readAllBytes(Paths.get(System.getProperty("user.home") + "Downloads/resources/static/img" + fileName));
-
     }
 }
