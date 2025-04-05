@@ -15,11 +15,11 @@ public class ServerApplication {
         SpringApplication.run(ServerApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner runner(ServerRepository repository) {
-        return args -> {
-            repository.save(new Server(null, "127.0.0.1", "Mac", "16 GB", "Personal PC", "http://lovalhost:8080/server/image/server1.png", Status.UP));
-            repository.save(new Server(null, "168.20.300.5", "Linux", "32 GB", "Personal PC", "http://lovalhost:8080/server/image/server1.png", Status.UP));
-        };
-    }
+//    @Bean
+//    CommandLineRunner runner(ServerRepository repository) {
+//        return args -> {
+//            repository.save(new Server(null, "127.0.0.1", "Mac", "16 GB", "Personal PC", "http://lovalhost:8080/server/image/server1.png", Status.UP));
+//            repository.save(new Server(null, "168.20.300.5", "Linux", "32 GB", "Personal PC", "http://lovalhost:8080/server/image/server1.png", Status.UP));
+//        };
+//    }
 }
